@@ -1,0 +1,236 @@
+</!DOCTYPE html>
+<html>
+
+<head>
+  <title> U. Nal</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://use.fontawesome.com/e5f0df805c.js"></script>
+ <link rel="stylesheet" type="text/css" href="http://code.jquery.com/qunit/qunit-1.11.0.css">
+        <script type="text/javascript" src="http://code.jquery.com/qunit/qunit-1.11.0.js"></script>
+<script type="text/javascript" src="pruebas.js"></script>
+
+
+</head>
+
+<body>
+
+
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" id="iniciar">
+      <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+
+        
+        <div class="modal-body">
+          <div class="row">
+            
+          <div class="col-md-12">
+             <br>
+           <p class="text-justify">Escribe un número en el campo de texto e ingrésalo con <button class="btn btn-primary btn-xs"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+           <br>
+           <br>
+           Luegro presiona "Calcular" </p>
+           <br>
+             </div>
+          </div>
+          
+          
+          
+        <div class="flex class text-center">
+        <button type="button" class="btn btn-primary btn-sm"  data-dismiss="modal"><i class="fa fa-times"></i></button>
+        </div>
+       </div>
+      </div>
+      </div>
+  </div>  
+
+<br>
+<br>
+
+<br>
+
+<div class="container">
+  
+  <div class="col-md-2">
+  Ingresa un número
+  <input type="text" id="x" class="form-control" />
+  </div>
+
+  <div class="col-md-4">
+  <br>
+  <button TYPE="button" class="btn btn-primary" id="bt" value="Add"> <i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+  </div>
+
+  <div class="col-md-4 col-lg-12">
+  <br>
+  <div id="line" style="display:none;" class="alert alert-success">
+      <strong>Agregado!</strong>
+    </div>
+  </div>
+
+
+
+  <div class="col-md-4">
+  
+  <p id="data"> </p>
+
+  </div>
+
+
+
+
+</div>
+
+<div class="container">
+  
+
+  <div class="col-md-4 col-lg-12">
+  <button class="btn btn-primary" type="button" id="res" value="Contar" disabled>Calcular</button>
+  </div>
+
+
+ <div class="col-md-2">
+ <br>
+  Resultado
+  <input type="text" id="result" class="form-control" disabled/>
+  </div>
+
+
+ <div class="col-md-4 col-lg-12">
+  <br>
+  <div id="fin" style="display:none;" class="alert alert-info">
+      <strong>Empezar de Nuevo</strong> <button id="reload" class="btn btn-default"><i class="fa fa-refresh" aria-hidden="true"></i></button>
+    </div>
+  </div>
+
+</div>
+
+<br>
+
+<br>
+
+<div class="container">
+
+<div id="qunit"></div>
+<div id="qunit-fixture"></div>
+
+</div>
+
+
+
+<script>
+
+$(document).ready(function(){
+  $('#iniciar').modal('show');
+
+ var datos = [];
+ var contador = 0;
+
+
+//--------------------------------Metodos-----------------------
+function permut(array) {
+  var index = array.length, temporal, random;
+  while (0 !== index) {
+    random = Math.floor(Math.random() * index);
+    index -= 1;
+    temporal = array[index];
+    array[index] = array[random];
+    array[random] = temporal;
+  }
+  return array;
+}
+
+
+function factorial(num)
+{
+    var rval=1;
+    for (var i = 2; i <= num; i++)
+        rval = rval * i;
+    return rval;
+}
+
+function calcular(data){
+
+   var n='';
+   var val = 0;
+         var iter = factorial(contador);
+         var finalArray = [];
+         var valor;
+
+         do{
+           var permutacion = permut(data);
+           valor=permutacion.join('');
+           finalArray[val]=valor;
+           val++;
+          }while(val<iter+10);
+      
+        var max=0;
+        for(var i=0;i<finalArray.length;i++){
+            if(max < finalArray[i]){
+                max = finalArray[i];
+      
+            }
+        }
+    return max;
+}
+
+
+//------------------------------Validaciones----------------------
+
+  $('#x').keypress(function(tecla) {
+        if(tecla.charCode < 48 || tecla.charCode > 57) return false;
+    });
+
+  $('#reload').click(function(){
+      location.reload();
+    });
+
+
+
+//-----------------------------Agregar---------------------------
+    $('#bt').click(function(){
+      
+        $('#line').show();
+        datos.push($('#x').val());
+        setTimeout(function(){
+           $('#line').hide();
+        }, 1000);
+        $('#data').html($('#data').html()+" "+$('#x').val());  
+        $('#x').val('');
+
+        contador++;
+        $('#res').prop('disabled', false);
+
+    });
+
+
+
+//-----------------------Resultado------------------------------
+
+    
+    $('#res').click(function(){
+      
+         var resultado=calcular(datos);
+         $('#result').val(resultado);
+
+         $('#bt').prop('disabled', true);
+         $('#x').prop('disabled', true);
+          $('#fin').show();
+    });
+
+
+
+
+});
+
+
+</script>
+
+
+</body>
+
+
+</html>
